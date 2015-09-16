@@ -1,4 +1,4 @@
-# node-sass-json-importer
+# node-sass-json-importer [![build status](https://travis-ci.org/Updater/node-sass-json-importer.svg?branch=master)](https://travis-ci.org/Updater/node-sass-json-importer)
 JSON importer for [node-sass](https://github.com/sass/node-sass). Allows `@import`ing `.json` files in Sass files parsed by `node-sass`.
 
 ## Usage
