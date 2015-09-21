@@ -20,6 +20,7 @@
     "prepublish": "npm run compile"
   },
   "dependencies": {
+    "is-there": "^4.0.0",
     "lodash": "^3.10.1"
   },
   "devDependencies": {
