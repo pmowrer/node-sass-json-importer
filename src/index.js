@@ -1,12 +1,23 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
+import isThere    from 'is-there';
 
 export default function(url, prev) {
   if (/\.json$/.test(url)) {
-    let file = resolve(prev.slice(0, prev.lastIndexOf('/')), url);
+    let paths = []
+      .concat(prev.slice(0, prev.lastIndexOf('/')))
+      .concat(this.options.includePaths || []);
+
+    let files = paths
+      .map(path => resolve(path, url))
+      .filter(isThere);
+
+    if (files.length === 0) {
+      return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
+    }
 
     return {
-      contents: parseJSON(require(file))
+      contents: parseJSON(require(files[0]))
     };
   } else {
     return {

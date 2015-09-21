@@ -1,6 +1,7 @@
 import jsonImporter from '../src/index';
 import sass         from 'node-sass';
 import {expect}     from 'chai';
+import {resolve}    from 'path';
 
 const EXPECTATION = 'body {\n  color: #c33; }\n';
 
@@ -31,5 +32,31 @@ describe('Import type test', function() {
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it('finds imports via includePaths', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/include-paths/style.scss',
+      includePaths: ['./test/fixtures/include-paths/variables'],
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it(`throws when an import doesn't exist`, function() {
+    function render() {
+      sass.renderSync({
+        file: './test/fixtures/include-paths/style.scss',
+        includePaths: ['./test/fixtures/include-paths/foo'],
+        importer: jsonImporter
+      });
+    }
+
+    expect(render).to.throw(
+      'Unable to find "variables.json" from the following path(s): ' +
+      `${resolve(process.cwd(), 'test/fixtures/include-paths')}, ./test/fixtures/include-paths/foo. ` +
+      'Check includePaths.'
+    );
   });
 });
