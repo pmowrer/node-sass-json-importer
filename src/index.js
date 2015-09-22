@@ -4,9 +4,10 @@ import isThere    from 'is-there';
 
 export default function(url, prev) {
   if (/\.json$/.test(url)) {
+    var includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
     let paths = []
       .concat(prev.slice(0, prev.lastIndexOf('/')))
-      .concat(this.options.includePaths || []);
+      .concat(includePaths);
 
     let files = paths
       .map(path => resolve(path, url))
