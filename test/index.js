@@ -44,6 +44,16 @@ describe('Import type test', function() {
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
+  it('finds imports via multiple includePaths', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/include-paths/style.scss',
+      includePaths: ['./test/fixtures/include-paths/variables', './some/other/path/'],
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
   it(`throws when an import doesn't exist`, function() {
     function render() {
       sass.renderSync({
