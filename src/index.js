@@ -4,7 +4,7 @@ import isThere    from 'is-there';
 
 export default function(url, prev) {
   if (/\.json$/.test(url)) {
-    var includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
+    let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
     let paths = []
       .concat(prev.slice(0, prev.lastIndexOf('/')))
       .concat(includePaths);
@@ -39,7 +39,7 @@ function parseValue(value) {
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
   } else if (_.isString(value) && value.match(/[\s,]/)) {
-    return `"${value}"`
+    return `"${value}"`;
   } else {
     return value;
   }
