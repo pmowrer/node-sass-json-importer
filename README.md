@@ -23,5 +23,19 @@ var result = sass.renderSync({
 });
 ```
 
+### [sass-loader](https://github.com/jtangelder/sass-loader)
+
+```javascript
+import jsonImporter from 'node-sass-json-importer';
+
+...
+// Webpack config
+{
+  sassLoader: {
+    importer: jsonImporter
+  }
+}
+```
+
 ## Thanks to
 This module is based on the [sass-json-vars](https://github.com/vigetlabs/sass-json-vars) gem, which unfortunately isn't compatible with `node-sass`.
