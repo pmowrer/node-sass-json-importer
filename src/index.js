@@ -1,28 +1,73 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
+import url        from 'url';
 
-export default function(url, prev) {
-  if (/\.json$/.test(url)) {
+export default function(fileUrl, prev) {
+  var pathRegex = /(.+\.js(on)?)(\?(.+))?$/
+  if (pathRegex.test(fileUrl)) {
     let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
+    let parsedUrl = url.parse(fileUrl,true)
+    let propQuery = parsedUrl.query
+    let filePath = parsedUrl.pathname
+
     let paths = []
       .concat(prev.slice(0, prev.lastIndexOf('/')))
       .concat(includePaths);
 
+
     let files = paths
-      .map(path => resolve(path, url))
+      .map(path => resolve(path, filePath))
       .filter(isThere);
 
     if (files.length === 0) {
-      return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
+      return new Error(`Unable to find "${filePath}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
     }
 
+    let exported = require(files[0]);
+
+    if(propQuery.path){
+      exported = exported[propQuery.path]
+    }
+
+    let functions = '';
+
+    if(propQuery.getter != null){
+      Object.keys(exported).map(function(key){
+        functions += `
+                    @function ${key}($keys...) {
+                      @return ${propQuery.getter}((
+                        keys:$keys,
+                        data:$_${key},
+                        name:'${key}'
+                      ));
+                    }`.replace(/^                    /gm, '');
+        if(propQuery.withKeys != null){
+          functions += `
+                      @function ${key}-keys($keys...) {
+                        $result: ${key}($keys...);
+                        @return map-keys($result);
+                      }`.replace(/^                      /gm, '');
+        }
+      })
+    }
+
+    if(propQuery.getter != null){
+      exported = Object.keys(exported).reduce(function(acc, key){
+        acc['_'+key] = exported[key];
+        return acc;
+      }, {})
+    }
+
+    let contents = parseJSON(exported) + functions
+
+
     return {
-      contents: parseJSON(require(files[0]))
+      contents: contents
     };
   } else {
     return {
-      file: url
+      file: fileUrl
     };
   }
 }

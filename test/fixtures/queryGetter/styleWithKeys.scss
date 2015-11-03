@@ -1,0 +1,8 @@
+@import 'lib';
+@import 'variables.js?getter=getter&withKeys';
+
+@each $color in color-keys() {
+  .color-#{$color} {
+    color: color($color);
+  }
+}
