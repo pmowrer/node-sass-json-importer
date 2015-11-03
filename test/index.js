@@ -4,7 +4,7 @@ import {expect}     from 'chai';
 import {resolve}    from 'path';
 
 const EXPECTATION1 = 'body {\n  color: #c33; }\n';
-const EXPECTATION2 = 'p::after {\n  content: "Ashness Pier, Derwentwater, Lake District, Cumbria, UK."; }\n';
+const EXPECTATION2 = 'p::after {\n  color: black;\n  content: "Ashness Pier, Derwentwater, Lake District, Cumbria, UK."; }\n';
 
 describe('Import type test', function() {
 
@@ -18,7 +18,7 @@ describe('Import type test', function() {
   });
 
   // Added as failing test for: https://github.com/Updater/node-sass-json-importer/pull/5
-  it('imports strings with spaces and/or commas', function() {
+  it('imports strings with spaces and/or commas but without parentheses', function() {
     let result = sass.renderSync({
       file: './test/fixtures/strings/content.scss',
       importer: jsonImporter
