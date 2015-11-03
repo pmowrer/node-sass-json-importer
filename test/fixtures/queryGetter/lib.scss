@@ -1,0 +1,60 @@
+/// Fetch nested keys
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Keys to fetch
+/// @return {*}
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+
+  @return $map;
+}
+
+
+
+/// Test if map got all `$keys` at first level
+/// @author Hugo Giraudel
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Keys to test
+/// @return {Bool}
+@function map-has-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+  }
+
+  @return true;
+}
+
+
+/// Test if map got all `$keys` nested with each others
+/// @author Hugo Giraudel
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Keys to test
+/// @return {Bool}
+@function map-has-nested-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return true;
+}
+
+
+@function getter($options){
+  $keys: map-get($options, keys);
+  $data: map-get($options, data);
+  $name: map-get($options, name);
+  @if length($keys) == 0 {
+    @return $data;
+  } @else if map-has-nested-key($data, $keys...) {
+    @return map-deep-get($data, $keys...);
+  } @else {
+    @warn "Unknown `#{$keys}` in `$#{name}`";
+    @return null;
+  }
+}

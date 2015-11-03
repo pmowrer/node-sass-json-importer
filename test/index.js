@@ -4,7 +4,8 @@ import {expect}     from 'chai';
 import {resolve}    from 'path';
 
 const EXPECTATION1 = 'body {\n  color: #c33; }\n';
-const EXPECTATION2 = 'p::after {\n  content: "Ashness Pier, Derwentwater, Lake District, Cumbria, UK."; }\n';
+const EXPECTATION2 = 'p::after {\n  color: black;\n  content: "Ashness Pier, Derwentwater, Lake District, Cumbria, UK."; }\n';
+const EXPECTATION3 = '.color-red {\n  color: #c33; }\n';
 
 describe('Import type test', function() {
 
@@ -17,8 +18,52 @@ describe('Import type test', function() {
     expect(result.css.toString()).to.eql(EXPECTATION1);
   });
 
+  it('imports *.js', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/js/style.scss',
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION1);
+  });
+
+  it('pass arguments when importing as query string', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/query/style.scss',
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION1);
+  });
+
+  it('import spesific key by passing `path` as query sting key', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/queryPath/style.scss',
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION1);
+  });
+
+  it('generate getter functions by passing `getter` as query sting key', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/queryGetter/style.scss',
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION1);
+  });
+  it('generate getter functions by passing `withKeys` as query sting key', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/queryGetter/styleWithKeys.scss',
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION3);
+  });
+
   // Added as failing test for: https://github.com/Updater/node-sass-json-importer/pull/5
-  it('imports strings with spaces and/or commas', function() {
+  it('imports strings with spaces and/or commas but without parentheses', function() {
     let result = sass.renderSync({
       file: './test/fixtures/strings/content.scss',
       importer: jsonImporter

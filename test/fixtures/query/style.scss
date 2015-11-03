@@ -1,0 +1,5 @@
+@import 'variables.js?foo=bar&baz=feez';
+
+body {
+  color: $color-red;
+}

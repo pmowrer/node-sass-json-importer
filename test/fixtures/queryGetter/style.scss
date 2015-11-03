@@ -1,0 +1,6 @@
+@import 'lib';
+@import 'variables.js?getter=getter';
+
+body {
+  color: color(red);
+}
