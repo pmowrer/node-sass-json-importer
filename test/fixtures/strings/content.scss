@@ -1,5 +1,6 @@
 @import 'variables.json';
 
 p::after {
+  color: $color-black;
   content: $alt;
 }
