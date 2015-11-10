@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import jsonImporter from '../src/index';
 import sass         from 'node-sass';
 import {expect}     from 'chai';
