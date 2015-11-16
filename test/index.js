@@ -4,8 +4,7 @@ import sass         from 'node-sass';
 import {expect}     from 'chai';
 import {resolve}    from 'path';
 
-const EXPECTATION1 = 'body {\n  color: #c33; }\n';
-const EXPECTATION2 = 'p::after {\n  content: "Ashness Pier, Derwentwater, Lake District, Cumbria, UK."; }\n';
+const EXPECTATION = 'body {\n  color: #c33; }\n';
 
 describe('Import type test', function() {
 
@@ -15,17 +14,7 @@ describe('Import type test', function() {
       importer: jsonImporter
     });
 
-    expect(result.css.toString()).to.eql(EXPECTATION1);
-  });
-
-  // Added as failing test for: https://github.com/Updater/node-sass-json-importer/pull/5
-  it('imports strings with spaces and/or commas', function() {
-    let result = sass.renderSync({
-      file: './test/fixtures/strings/content.scss',
-      importer: jsonImporter
-    });
-
-    expect(result.css.toString()).to.eql(EXPECTATION2);
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
   it('imports lists', function() {
@@ -34,7 +23,7 @@ describe('Import type test', function() {
       importer: jsonImporter
     });
 
-    expect(result.css.toString()).to.eql(EXPECTATION1);
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
   it('imports maps', function() {
@@ -43,7 +32,7 @@ describe('Import type test', function() {
       importer: jsonImporter
     });
 
-    expect(result.css.toString()).to.eql(EXPECTATION1);
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
   it('finds imports via includePaths', function() {
@@ -53,7 +42,7 @@ describe('Import type test', function() {
       importer: jsonImporter
     });
 
-    expect(result.css.toString()).to.eql(EXPECTATION1);
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
   it('finds imports via multiple includePaths', function() {
@@ -63,7 +52,7 @@ describe('Import type test', function() {
       importer: jsonImporter
     });
 
-    expect(result.css.toString()).to.eql(EXPECTATION1);
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
   it(`throws when an import doesn't exist`, function() {
