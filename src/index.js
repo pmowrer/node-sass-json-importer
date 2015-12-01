@@ -1,6 +1,7 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
+import sass       from 'node-sass';
 
 export default function(url, prev) {
   if (/\.json$/.test(url)) {
@@ -21,9 +22,7 @@ export default function(url, prev) {
       contents: parseJSON(require(files[0]))
     };
   } else {
-    return {
-      file: url
-    };
+    return sass.NULL;
   }
 }
 
