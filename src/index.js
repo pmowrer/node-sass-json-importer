@@ -1,30 +1,29 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
+import sass       from 'node-sass';
 
 export default function(url, prev) {
-  if (/\.json$/.test(url)) {
-    let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
-    let paths = []
-      .concat(prev.slice(0, prev.lastIndexOf('/')))
-      .concat(includePaths);
-
-    let files = paths
-      .map(path => resolve(path, url))
-      .filter(isThere);
-
-    if (files.length === 0) {
-      return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
-    }
-
-    return {
-      contents: parseJSON(require(files[0]))
-    };
-  } else {
-    return {
-      file: url
-    };
+  if (!/\.json$/.test(url)) {
+    return sass.NULL;
   }
+
+  let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
+  let paths = []
+    .concat(prev.slice(0, prev.lastIndexOf('/')))
+    .concat(includePaths);
+
+  let files = paths
+    .map(path => resolve(path, url))
+    .filter(isThere);
+
+  if (files.length === 0) {
+    return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
+  }
+
+  return {
+    contents: parseJSON(require(files[0]))
+  };
 }
 
 function parseJSON(json) {
