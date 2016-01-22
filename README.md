@@ -2,6 +2,7 @@
 JSON importer for [node-sass](https://github.com/sass/node-sass). Allows `@import`ing `.json` files in Sass files parsed by `node-sass`.
 
 ## Usage
+### [node-sass](https://github.com/sass/node-sass)
 This module hooks into [node-sass's importer api](https://github.com/sass/node-sass#importer--v200---experimental).
 
 ```javascript
@@ -23,18 +24,26 @@ var result = sass.renderSync({
 });
 ```
 
-### [sass-loader](https://github.com/jtangelder/sass-loader)
+### Webpack / [sass-loader](https://github.com/jtangelder/sass-loader)
 
 ```javascript
 import jsonImporter from 'node-sass-json-importer';
 
-...
 // Webpack config
-{
+export default {
+  module: {
+    // Example sass-loader usage. 
+    // See: https://github.com/jtangelder/sass-loader#apply-via-webpack-config
+    loaders: [{
+      test: /\.scss$/,
+      loaders: ["style", "css", "sass"]
+    }],
+  },
   sassLoader: {
+    // Apply the JSON importer via sass-loader's options.
     importer: jsonImporter
   }
-}
+};
 ```
 
 ## Thanks to
