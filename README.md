@@ -24,6 +24,14 @@ var result = sass.renderSync({
 });
 ```
 
+### [node-sass](https://github.com/sass/node-sass) command-line interface
+
+To run this using node-sass CLI, point `--importer` to your installed json importer, for example: 
+
+```sh
+./node_modules/.bin/node-sass --importer node_modules/node-sass-json-importer/dist/node-sass-json-importer.js --recursive ./src --output ./dist
+```
+
 ### Webpack / [sass-loader](https://github.com/jtangelder/sass-loader)
 
 ```javascript
