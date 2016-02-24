@@ -20,6 +20,8 @@ export default function(url, prev) {
   if (files.length === 0) {
     return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
   }
+  
+  delete require.cache[require.resolve(files[0])];
 
   return {
     contents: parseJSON(require(files[0]))
