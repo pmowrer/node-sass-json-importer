@@ -22,6 +22,8 @@ export default function(url, prev) {
     return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
   }
 
+  // Prevent file from being cached by Node's `require` on continuous builds.
+  // https://github.com/Updater/node-sass-json-importer/issues/21
   delete require.cache[require.resolve(file)];
 
   return {
