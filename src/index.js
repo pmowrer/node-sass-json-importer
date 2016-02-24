@@ -13,18 +13,21 @@ export default function(url, prev) {
     .concat(prev.slice(0, prev.lastIndexOf('/')))
     .concat(includePaths);
 
-  let files = paths
+  let file = paths
     .map(path => resolve(path, url))
-    .filter(isThere);
+    .filter(isThere)
+    .pop();
 
-  if (files.length === 0) {
+  if (!file) {
     return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
   }
-  
-  delete require.cache[require.resolve(files[0])];
+
+  // Prevent file from being cached by Node's `require` on continuous builds.
+  // https://github.com/Updater/node-sass-json-importer/issues/21
+  delete require.cache[require.resolve(file)];
 
   return {
-    contents: parseJSON(require(files[0]))
+    contents: parseJSON(require(file))
   };
 }
 
