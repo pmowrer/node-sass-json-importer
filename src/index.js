@@ -1,11 +1,12 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
-import sass       from 'node-sass';
 
-export default function(url, prev) {
+export default function(url, prev, done) {
   if (!/\.json$/.test(url)) {
-    return sass.NULL;
+    return done({
+      file: url
+    });
   }
 
   let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
