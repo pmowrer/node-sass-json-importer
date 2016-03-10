@@ -1,0 +1,5 @@
+@import 'variables.js';
+
+body {
+  color: map-get($colors, red);
+}
