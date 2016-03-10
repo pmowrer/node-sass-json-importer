@@ -4,7 +4,7 @@ import isThere    from 'is-there';
 import sass       from 'node-sass';
 
 export default function(url, prev) {
-  if (!/\.json$/.test(url)) {
+  if (!/\.(json|js)$/.test(url)) {
     return sass.NULL;
   }
 
