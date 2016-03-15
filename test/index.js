@@ -57,22 +57,21 @@ describe('Import type test', function() {
     })).forEach(testExpectedCSS);
   });
 
-  it('converts JS/JSON strings to Sass strings', function() {
+  it('quotes strings and preserves numbers, floats, colors, and values with units', function() {
     ['./test/fixtures/convert-strings/style-js.scss',
       './test/fixtures/convert-strings/style.scss'
     ].map(sassRenderFile()).forEach(function(result) {
-      expect(result.css.toString()).to.eql(`body {\n  content: 'Lorem ipsum, ("foo", bar)';\n  color: #c33, white, black, #0a0000, blue;\n  font-size: 2.3em; }\n`);
+      expect(result.css.toString()).to.eql(`body {\n  content: 'Lorem ipsum, ("foo", bar)';\n  color: #c33, white, black, #0a0000, blue;\n  font-size: 2.3em;\n  margin-top: 5px;\n  margin-bottom: 5.5em; }\n`);
     });
   });
 
-  it(`JS imports do not export non valid JSON values`, function() {
+  it(`strips non-valid JSON values from JS exports`, function() {
     function render() {
       sass.renderSync({
         file: './test/fixtures/wrong-js-export/style-js.scss',
         importer: jsonImporter
       });
     }
-
     expect(render).to.throw(`Undefined variable: "$color-red".`)
   });
 
