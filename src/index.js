@@ -2,6 +2,7 @@ import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
 import sass       from 'node-sass';
+import isColor    from 'is-color';
 
 export default function(url, prev) {
   if (!/\.(json|js)$/.test(url)) {
@@ -40,6 +41,10 @@ export default function(url, prev) {
   };
 }
 
+function isCSSUnit(value) {
+  return /^\d*\.*\d+(em|ex|ch|rem|vh|vw|vmin|vmax|px|mm|cm|in|pt|pc|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)$/.test(value);
+}
+
 function parseJSON(json) {
   return Object.keys(json)
     .map(key => `$${key}: ${parseValue(json[key])};`)
@@ -52,7 +57,7 @@ function parseValue(value) {
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
   } else {
-    return value;
+    return parseEndValue(value);
   }
 }
 
@@ -66,4 +71,12 @@ function parseMap(map) {
   return `(${Object.keys(map)
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
+}
+
+function parseEndValue(value) {
+  if (typeof value === 'string' && !isColor(value) && !isCSSUnit(value)) {
+    return JSON.stringify(value);
+  }
+
+  return value;
 }

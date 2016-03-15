@@ -20,6 +20,7 @@
     "prepublish": "npm run compile"
   },
   "dependencies": {
+    "is-color": "^0.2.0",
     "is-there": "^4.0.0",
     "lodash": "^3.10.1",
     "node-sass": "^3.0.0"

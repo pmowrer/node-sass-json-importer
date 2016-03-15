@@ -57,6 +57,14 @@ describe('Import type test', function() {
     })).forEach(testExpectedCSS);
   });
 
+  it('converts JS/JSON strings to Sass strings', function() {
+    ['./test/fixtures/convert-strings/style-js.scss',
+      './test/fixtures/convert-strings/style.scss'
+    ].map(sassRenderFile()).forEach(function(result) {
+      expect(result.css.toString()).to.eql(`body {\n  content: 'Lorem ipsum, ("foo", bar)';\n  color: #c33, white, black, #0a0000, blue;\n  font-size: 2.3em; }\n`);
+    });
+  });
+
   it(`JS imports do not export non valid JSON values`, function() {
     function render() {
       sass.renderSync({
