@@ -4,7 +4,7 @@ import isThere    from 'is-there';
 import sass       from 'node-sass';
 
 export default function(url, prev) {
-  if (!/\.json$/.test(url)) {
+  if (!/\.(json|js)$/.test(url)) {
     return sass.NULL;
   }
 
@@ -26,8 +26,17 @@ export default function(url, prev) {
   // https://github.com/Updater/node-sass-json-importer/issues/21
   delete require.cache[require.resolve(file)];
 
+  var contents = require(file);
+  try {
+    if (/\.js$/.test(url)) {
+      contents = JSON.parse(JSON.stringify(contents));
+    }
+  } catch(e) {
+    return sass.NULL;
+  }
+
   return {
-    contents: parseJSON(require(file))
+    contents: parseJSON(contents)
   };
 }
 
