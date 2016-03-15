@@ -57,6 +57,17 @@ describe('Import type test', function() {
     })).forEach(testExpectedCSS);
   });
 
+  it(`JS imports do not export non valid JSON values`, function() {
+    function render() {
+      sass.renderSync({
+        file: './test/fixtures/wrong-js-export/style-js.scss',
+        importer: jsonImporter
+      });
+    }
+
+    expect(render).to.throw(`Undefined variable: "$color-red".`)
+  });
+
   it(`throws when an import doesn't exist`, function() {
     function render(file) {
       return function() {
