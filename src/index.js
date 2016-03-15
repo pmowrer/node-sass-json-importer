@@ -2,9 +2,10 @@ import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
 import sass       from 'node-sass';
+import isColor    from 'is-color';
 
 export default function(url, prev) {
-  if (!/\.json$/.test(url)) {
+  if (!/\.(json|js)$/.test(url)) {
     return sass.NULL;
   }
 
@@ -26,9 +27,22 @@ export default function(url, prev) {
   // https://github.com/Updater/node-sass-json-importer/issues/21
   delete require.cache[require.resolve(file)];
 
+  var contents = require(file);
+  try {
+    if (/\.js$/.test(url)) {
+      contents = JSON.parse(JSON.stringify(contents));
+    }
+  } catch(e) {
+    return sass.NULL;
+  }
+
   return {
-    contents: parseJSON(require(file))
+    contents: parseJSON(contents)
   };
+}
+
+function isCSSUnit(value) {
+  return /^\d*\.*\d+(em|ex|ch|rem|vh|vw|vmin|vmax|px|mm|cm|in|pt|pc|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)$/.test(value);
 }
 
 function parseJSON(json) {
@@ -43,7 +57,7 @@ function parseValue(value) {
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
   } else {
-    return value;
+    return parseEndValue(value);
   }
 }
 
@@ -57,4 +71,12 @@ function parseMap(map) {
   return `(${Object.keys(map)
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
+}
+
+function parseEndValue(value) {
+  if (typeof value === 'string' && !isColor(value) && !isCSSUnit(value)) {
+    return JSON.stringify(value);
+  }
+
+  return value;
 }

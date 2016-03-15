@@ -1,0 +1,9 @@
+@import 'variables.json';
+
+body {
+  content: $string;
+  color: $hex-color, $hsl-color, $rgba-color, $rgb-color, $css-color;
+  font-size: $em-unit;
+  margin-top: #{$number}px;
+  margin-bottom: #{$float}em;
+}
