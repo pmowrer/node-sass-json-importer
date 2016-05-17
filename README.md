@@ -54,5 +54,26 @@ export default {
 };
 ```
 
+## Importing strings
+Since JSON doesn't map directly to SASS's data types, a common source of confusion is how to handle strings. While [SASS allows strings to be both quoted and unqouted](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#sass-script-strings), strings containing spaces, commas and/or other special characters have to be wrapped in quotes. In terms of JSON, this means the string has to be double quoted:
+
+##### Incorrect
+```json
+{
+  "description": "A sentence with spaces."
+}
+```
+
+##### Correct
+```json
+{
+  "description": "'A sentence with spaces.'"
+}
+```
+
+See discussion here for more:
+
+https://github.com/Updater/node-sass-json-importer/pull/5
+
 ## Thanks to
 This module is based on the [sass-json-vars](https://github.com/vigetlabs/sass-json-vars) gem, which unfortunately isn't compatible with `node-sass`.
