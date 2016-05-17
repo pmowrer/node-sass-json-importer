@@ -7,7 +7,6 @@ import {resolve}    from 'path';
 const EXPECTATION = 'body {\n  color: #c33; }\n';
 
 describe('Import type test', function() {
-
   it('imports strings', function() {
     let result = sass.renderSync({
       file: './test/fixtures/strings/style.scss',
@@ -69,5 +68,14 @@ describe('Import type test', function() {
       `${resolve(process.cwd(), 'test/fixtures/include-paths')}, ./test/fixtures/include-paths/foo. ` +
       'Check includePaths.'
     );
+  });
+
+  it('ignores non-json imports', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/non-json/style.scss',
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 });
