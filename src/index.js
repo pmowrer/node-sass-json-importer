@@ -1,11 +1,10 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
-import sass       from 'node-sass';
 
 export default function(url, prev) {
   if (!/\.json$/.test(url)) {
-    return sass.NULL;
+    return null;
   }
 
   let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
