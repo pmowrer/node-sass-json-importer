@@ -1,0 +1,28 @@
+# Changelog
+
+## 2.0.0
+##### Breaking
+* Add `node-sass` `^3.5.3` as a `peerDependency`.
+
+##### Fixes
+* Return plain `null` instead of `sass.NULL` when not handling an import per [updated guidelines](https://github.com/sass/node-sass/blob/master/README.md#importer--v200---experimental). https://github.com/sass/node-sass/issues/1291
+
+## 1.0.6
+##### Fixes
+* Invalidate `require` cache on each importer run.
+
+## 1.0.5
+##### Fixes
+* Return `sass.NULL` when not handling an import per [`node-sass` guidelines](https://github.com/sass/node-sass/blob/fe8dbae1ddbbb602bf508d63b558a003f496f9b6/README.md#importer--v200---experimental).
+
+## 1.0.4
+##### Fixes
+* Revert attempting to wrap strings with spaces/commas (wrap strings in extra quotes instead).
+
+## 1.0.3
+##### Fixes
+* Fix importing strings with spaces/commas breaking. **Reverted in 1.0.4**
+
+## 1.0.2
+##### Fixes
+* Fix `includePaths` not working with multiple entries.
