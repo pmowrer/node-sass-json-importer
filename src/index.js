@@ -3,7 +3,7 @@ import {resolve}  from 'path';
 import isThere    from 'is-there';
 
 export default function(url, prev) {
-  if (!/\.json$/.test(url)) {
+  if (!isJSONfile(url)) {
     return null;
   }
 
@@ -26,17 +26,21 @@ export default function(url, prev) {
   delete require.cache[require.resolve(file)];
 
   return {
-    contents: parseJSON(require(file))
+    contents: transformJSONtoSass(require(file))
   };
 }
 
-function parseJSON(json) {
+export function isJSONfile(url) {
+  return /\.json$/.test(url);
+}
+
+export function transformJSONtoSass(json) {
   return Object.keys(json)
     .map(key => `$${key}: ${parseValue(json[key])};`)
     .join('\n');
 }
 
-function parseValue(value) {
+export function parseValue(value) {
   if (_.isArray(value)) {
     return parseList(value);
   } else if (_.isPlainObject(value)) {
@@ -46,13 +50,13 @@ function parseValue(value) {
   }
 }
 
-function parseList(list) {
+export function parseList(list) {
   return `(${list
     .map(value => parseValue(value))
     .join(',')})`;
 }
 
-function parseMap(map) {
+export function parseMap(map) {
   return `(${Object.keys(map)
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
