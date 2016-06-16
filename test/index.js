@@ -1,9 +1,12 @@
 /* eslint-env mocha */
-import jsonImporter from '../src/index';
+import jsonImporter, {
+  isJSONfile
+}                   from '../src/index';
 import sass         from 'node-sass';
 import {expect}     from 'chai';
 import {resolve}    from 'path';
 
+const requiredImporter = require('../src/index');
 const EXPECTATION = 'body {\n  color: #c33; }\n';
 
 describe('Import type test', function() {
@@ -77,5 +80,20 @@ describe('Import type test', function() {
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  // TODO: Added to verify named exports + CommonJS default export hack (see index.js).
+  it('provides the default export when using node require to import', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/strings/style.scss',
+      importer: requiredImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  // TODO: Added to verify named exports + CommonJS default export hack (see index.js).
+  it('provides named exports of internal methods', function() {
+    expect(isJSONfile('import.json')).to.be.true;
   });
 });
