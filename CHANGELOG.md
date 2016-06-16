@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1
+##### Fixes
+* Fix 2.1.0 breaking the default export for CommonJS.
+
 ## 2.1.0
 ##### Features
 * Export internal methods that compose the importer. E.g. `transformJSONtoSass` can now be used independently of `node-sass` to transform parsed JSON into Sass.
