@@ -25,9 +25,14 @@ export default function(url, prev) {
   // https://github.com/Updater/node-sass-json-importer/issues/21
   delete require.cache[require.resolve(file)];
 
-  return {
-    contents: transformJSONtoSass(require(file))
-  };
+  try {
+    return {
+      contents: transformJSONtoSass(require(file))
+    };
+  } catch(e) {
+    return new Error(`node-sass-json-importer: Error transforming JSON to SASS. Check if your JSON parses correctly. ${e}`);
+  }
+
 }
 
 export function isJSONfile(url) {
