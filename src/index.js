@@ -1,6 +1,7 @@
 import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
+import traverse   from 'traverse';
 
 export default function(url, prev) {
   if (!isJSONfile(url)) {
@@ -35,8 +36,14 @@ export function isJSONfile(url) {
 }
 
 export function transformJSONtoSass(json) {
-  return Object.keys(json)
-    .map(key => `$${key}: ${parseValue(json[key])};`)
+  var obj = traverse(includeContent);
+  return obj.paths(json)
+    .map(key => {
+      var val = obj.get(key);
+      if (typeof val !== 'object') {
+        return `$${key.join('-')}: ${val};`;
+      }
+    })
     .join('\n');
 }
 
