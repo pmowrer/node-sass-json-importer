@@ -36,7 +36,7 @@ export function isJSONfile(url) {
 }
 
 export function transformJSONtoSass(json) {
-  var obj = traverse(includeContent);
+  var obj = traverse(json);
   return obj.paths(json)
     .map(key => {
       var val = obj.get(key);
