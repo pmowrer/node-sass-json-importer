@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+##### (Possibly) Breaking
+* If parsing errors out, catch and return a well formed `Error` as per [`node-sass` best-practices for importers](https://github.com/sass/node-sass/blob/dc92c18e1dffd4acbab69e76c4bcda238f52da27/README.md#importer--v200---experimental) (see "Starting from v3.0.0:" section).
+
 ## 2.1.1
 ##### Fixes
 * Fix 2.1.0 breaking the default export for CommonJS.
