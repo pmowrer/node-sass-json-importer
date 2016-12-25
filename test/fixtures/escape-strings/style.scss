@@ -1,0 +1,26 @@
+@import 'variables.json';
+
+/// Map deep get
+/// @author Hugo Giraudel
+/// @access public
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Key chain
+/// @return {*} - Desired value
+@function map-deep-get($map, $keys...) {
+    @each $key in $keys {
+        $map: map-get($map, $key);
+    }
+    @return $map;
+}
+
+// Fetch nested data from JSON
+$entry-name: map-get($sony, name);
+$entry-selectors: map-deep-get($sony, "selectors", "entry");
+
+// Generate CSS based on this data
+@each $entry in $entry-selectors {
+  #{$entry}:before {
+    color: red;
+    content: "#{$entry-name}";
+  }
+}

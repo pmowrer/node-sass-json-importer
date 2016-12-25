@@ -1,0 +1,34 @@
+{
+  "google": {
+    "name": "Google",
+    "patterns": ["*//*.google.*/*"],
+    "selectors": {
+      "entry": ["#google > div"],
+      "anchor": "h2 a"
+    }
+  },
+  "microsoft": {
+    "name": "Microsoft",
+    "patterns": ["*//*.subdomain.microsoft.com/*", "*//microsoft.com/*"],
+    "selectors": {
+      "entry": ["#main > li"],
+      "anchor": "h3.title a"
+    }
+  },
+  "sony": {
+    "name": "sony",
+    "patterns": ["*//www.sony.com/"],
+    "selectors": {
+      "entry": ["#results > li", "#results2 > li"],
+      "anchor": "h2 > a"
+    }
+  },
+  "apple": {
+    "name": "Apple",
+    "patterns": ["*//apple.com/"],
+    "selectors": {
+      "entry": ["#links > .result"],
+      "anchor": "h2 > a"
+    }
+  }
+}
