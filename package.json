@@ -20,7 +20,7 @@
     "prepublish": "npm run compile"
   },
   "peerDependencies": {
-    "node-sass": "^3.5.3"
+    "node-sass": "^4.0.0"
   },
   "dependencies": {
     "is-there": "^4.0.0",
