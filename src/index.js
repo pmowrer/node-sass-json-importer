@@ -2,10 +2,14 @@ import _          from 'lodash';
 import {resolve}  from 'path';
 import isThere    from 'is-there';
 
+var ESCAPE_STRINGS = false;
+
 export default function(url, prev) {
   if (!isJSONfile(url)) {
     return null;
   }
+
+  ESCAPE_STRINGS = this.options.escapeStrings;
 
   let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
   let paths = []
@@ -50,6 +54,8 @@ export function parseValue(value) {
     return parseList(value);
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
+  } else if (ESCAPE_STRINGS && _.isString(value)) {
+    return `"${value}"`
   } else {
     return value;
   }

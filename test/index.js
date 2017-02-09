@@ -37,6 +37,37 @@ describe('Import type test', function() {
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
+  it('escapes strings when escapeStrings option is set', function() {
+    const escapeStringsExpectation = `#results > li:before {
+  color: red;
+  content: "sony"; }
+
+#results2 > li:before {
+  color: red;
+  content: "sony"; }
+`
+    let result = sass.renderSync({
+      file: './test/fixtures/escape-strings/style.scss',
+      escapeStrings: true,
+      importer: jsonImporter
+    });
+
+    expect(result.css.toString()).to.eql(escapeStringsExpectation);
+  });
+
+  it(`throws on complex JSON when escapeStrings option is not set`, function() {
+    function render() {
+      sass.renderSync({
+        file: './test/fixtures/escape-strings/style.scss',
+        importer: jsonImporter
+      });
+    }
+
+    expect(render).to.throw(
+      'Invalid CSS after "...gle,patterns: (": expected expression (e.g. 1px, bold), was "*//*.google.*/*),se"'
+    );
+  });
+
   it('finds imports via includePaths', function() {
     let result = sass.renderSync({
       file: './test/fixtures/include-paths/style.scss',
