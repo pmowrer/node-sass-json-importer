@@ -68,7 +68,7 @@ describe('Import type test', function() {
 
     expect(render).to.throw(
       'Unable to find "variables.json" from the following path(s): ' +
-      `${resolve(process.cwd(), 'test/fixtures/include-paths')}, ./test/fixtures/include-paths/foo. ` +
+      `${resolve(process.cwd(), 'test/fixtures/include-paths')}, ${process.cwd()}, ./test/fixtures/include-paths/foo. ` +
       'Check includePaths.'
     );
   });
