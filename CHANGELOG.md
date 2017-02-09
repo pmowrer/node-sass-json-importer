@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.1
+##### Fixes
+* Update `node-sass` dependency versions from `^3.5.3` to `>=3.5.3` to allow using 4.x and above without triggering npm warnings.
+* Add `yarn.lock`.
+
 ## 3.0.0
 ##### (Possibly) Breaking
 * If parsing errors out, catch and return a well formed `Error` as per [`node-sass` best-practices for importers](https://github.com/sass/node-sass/blob/dc92c18e1dffd4acbab69e76c4bcda238f52da27/README.md#importer--v200---experimental) (see "Starting from v3.0.0:" section).
