@@ -1,13 +1,13 @@
-import _          from 'lodash';
-import {resolve}  from 'path';
-import isThere    from 'is-there';
+import _               from 'lodash';
+import path, {resolve} from 'path';
+import isThere         from 'is-there';
 
 export default function(url, prev) {
   if (!isJSONfile(url)) {
     return null;
   }
 
-  let includePaths = this.options.includePaths ? this.options.includePaths.split(':') : [];
+  let includePaths = this.options.includePaths ? this.options.includePaths.split(path.delimiter) : [];
   let paths = []
     .concat(prev.slice(0, prev.lastIndexOf('/')))
     .concat(includePaths);
