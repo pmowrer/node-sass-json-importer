@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.2
+##### Fixes
+* Fix `includePaths` option for Windows users by using the environment's delimiter instead of harcoding unix's.
+
 ## 3.0.1
 ##### Fixes
 * Update `node-sass` dependency versions from `^3.5.3` to `>=3.5.3` to allow using 4.x and above without triggering npm warnings.
