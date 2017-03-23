@@ -34,7 +34,7 @@ To run this using node-sass CLI, point `--importer` to your installed json impor
 
 ### Webpack / [sass-loader](https://github.com/jtangelder/sass-loader)
 
-#### Webpack v1 or below v2.1.0-beta.23
+#### Webpack v1
 
 ```javascript
 import jsonImporter from 'node-sass-json-importer';
@@ -42,21 +42,19 @@ import jsonImporter from 'node-sass-json-importer';
 // Webpack config
 export default {
   module: {
-    // Example sass-loader usage. 
-    // See: https://github.com/jtangelder/sass-loader#apply-via-webpack-config
     loaders: [{
       test: /\.scss$/,
       loaders: ["style", "css", "sass"]
     }],
   },
+  // Apply the JSON importer via sass-loader's options.
   sassLoader: {
-    // Apply the JSON importer via sass-loader's options.
     importer: jsonImporter
   }
 };
 ```
 
-#### Webpack v2.1.0-beta.23 or above
+#### Webpack v2
 
 ```javascript
 import jsonImporter from 'node-sass-json-importer';
@@ -64,25 +62,26 @@ import jsonImporter from 'node-sass-json-importer';
 // Webpack config
 export default {
   module: {
-    // Example sass-loader usage. 
-    // See: https://github.com/jtangelder/sass-loader#apply-via-webpack-config
-    loaders: [{
+    rules: [
       test: /\.scss$/,
-      loaders: ["style", "css", "sass"]
-    }],
-  },
-  plugins: [
-    // ...other plugins
-    
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        sassLoader: {
-          importer: jsonImporter,
+      use: [
+        'style-loader',
+        {
+          loader: 'css-loader',
+          options: {
+            importLoaders: 1
+          },
         },
-        context: __dirname,
-      },
-    }),
-  ]
+        {
+          loader: 'sass-loader',
+          // Apply the JSON importer via sass-loader's options.
+          options: {
+            importer: nodeSassJsonImporter,
+          },
+        },
+      ],
+    ],
+  },
 };
 ```
 
