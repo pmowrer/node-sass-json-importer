@@ -76,7 +76,7 @@ export default {
           loader: 'sass-loader',
           // Apply the JSON importer via sass-loader's options.
           options: {
-            importer: nodeSassJsonImporter,
+            importer: jsonImporter,
           },
         },
       ],
