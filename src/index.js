@@ -51,7 +51,7 @@ export function parseValue(value) {
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
   } else {
-    return value;
+    return `unquote("${value}")`;
   }
 }
 
