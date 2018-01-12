@@ -2,6 +2,8 @@ import _               from 'lodash';
 import path, {resolve} from 'path';
 import isThere         from 'is-there';
 
+import 'json5/lib/require'; // Enable JSON5 support
+
 export default function(url, prev) {
   if (!isJSONfile(url)) {
     return null;
@@ -12,31 +14,30 @@ export default function(url, prev) {
     .concat(prev.slice(0, prev.lastIndexOf('/')))
     .concat(includePaths);
 
-  let file = paths
+  let fileName = paths
     .map(path => resolve(path, url))
     .filter(isThere)
     .pop();
 
-  if (!file) {
+  if (!fileName) {
     return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
   }
 
   // Prevent file from being cached by Node's `require` on continuous builds.
   // https://github.com/Updater/node-sass-json-importer/issues/21
-  delete require.cache[require.resolve(file)];
+  delete require.cache[require.resolve(fileName)];
 
   try {
     return {
-      contents: transformJSONtoSass(require(file))
+      contents: transformJSONtoSass(require(fileName)),
     };
-  } catch(e) {
-    return new Error(`node-sass-json-importer: Error transforming JSON to SASS. Check if your JSON parses correctly. ${e}`);
+  } catch(error) {
+    return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);
   }
-
 }
 
 export function isJSONfile(url) {
-  return /\.json$/.test(url);
+  return /\.json5?$/.test(url);
 }
 
 export function transformJSONtoSass(json) {
