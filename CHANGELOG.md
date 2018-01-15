@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.0
+* Add support for `.json5` files
+
 ## 3.0.2
 ##### Fixes
 * Fix `includePaths` option for Windows users by using the environment's delimiter instead of harcoding unix's.

@@ -1,6 +1,6 @@
 # node-sass-json-importer
 
-JSON importer for [node-sass](https://github.com/sass/node-sass). Allows `@import`ing `.json` files in Sass files parsed by `node-sass`.
+JSON importer for [node-sass](https://github.com/sass/node-sass). Allows `@import`ing `.json` or `.json5` files in Sass files parsed by `node-sass`.
 
 [![npm](https://img.shields.io/npm/v/node-sass-json-importer.svg)](https://www.npmjs.com/package/node-sass-json-importer)
 [![build status](https://travis-ci.org/Updater/node-sass-json-importer.svg?branch=master)](https://travis-ci.org/Updater/node-sass-json-importer)

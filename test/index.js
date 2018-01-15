@@ -1,7 +1,5 @@
 /* eslint-env mocha */
-import jsonImporter, {
-  isJSONfile
-}                   from '../src/index';
+import jsonImporter, {isJSONfile} from '../src/index';
 import sass         from 'node-sass';
 import {expect}     from 'chai';
 import {resolve}    from 'path';
@@ -9,7 +7,24 @@ import {resolve}    from 'path';
 const requiredImporter = require('../src/index');
 const EXPECTATION = 'body {\n  color: #c33; }\n';
 
-describe('Import type test', function() {
+describe('node-sass-json-importer', function() {
+  // TODO: Added to verify named exports + CommonJS default export hack (see index.js).
+  it('provides the default export when using node require to import', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/strings/style.scss',
+      importer: requiredImporter
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  // TODO: Added to verify named exports + CommonJS default export hack (see index.js).
+  it('provides named exports of internal methods', function() {
+    expect(isJSONfile('import.json')).to.be.true;
+  });
+});
+
+describe('Import type test (JSON)', function() {
   it('imports strings', function() {
     let result = sass.renderSync({
       file: './test/fixtures/strings/style.scss',
@@ -81,19 +96,92 @@ describe('Import type test', function() {
 
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
+});
 
-  // TODO: Added to verify named exports + CommonJS default export hack (see index.js).
-  it('provides the default export when using node require to import', function() {
+describe('Import type test (JSON5)', function() {
+  it('imports strings', function() {
     let result = sass.renderSync({
-      file: './test/fixtures/strings/style.scss',
-      importer: requiredImporter
+      file: './test/fixtures-json5/strings/style.scss',
+      importer: jsonImporter,
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
-  // TODO: Added to verify named exports + CommonJS default export hack (see index.js).
-  it('provides named exports of internal methods', function() {
-    expect(isJSONfile('import.json')).to.be.true;
+  it('imports lists', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/lists/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it('imports maps', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/maps/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it('finds imports via includePaths', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/include-paths/style.scss',
+      includePaths: ['./test/fixtures-json5/include-paths/variables'],
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it('finds imports via multiple includePaths', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/include-paths/style.scss',
+      includePaths: ['./test/fixtures-json5/include-paths/variables', './some/other/path/'],
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it(`throws when an import doesn't exist`, function() {
+    function render() {
+      sass.renderSync({
+        file: './test/fixtures-json5/include-paths/style.scss',
+        includePaths: ['./test/fixtures-json5/include-paths/foo'],
+        importer: jsonImporter,
+      });
+    }
+
+    expect(render).to.throw(
+      'Unable to find "variables.json5" from the following path(s): ' +
+      `${resolve(process.cwd(), 'test/fixtures-json5/include-paths')}, ${process.cwd()}, ./test/fixtures-json5/include-paths/foo. ` +
+      'Check includePaths.'
+    );
+  });
+
+  it('ignores non-json imports', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/non-json/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+});
+
+describe('isJSONfile', function() {
+  it('returns true if the given URL is a JSON file', function() {
+    expect(isJSONfile('/test/variables.json')).to.be.true;
+  });
+
+  it('returns true if the given URL is a JSON5 file', function() {
+    expect(isJSONfile('/test/variables.json5')).to.be.true;
+  });
+
+  it('returns false if the given URL is not a JSON or JSON5 file', function() {
+    expect(isJSONfile('/test/variables.not-json-or-json5')).to.be.false;
   });
 });
