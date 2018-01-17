@@ -1,6 +1,6 @@
 {
   "name": "node-sass-json-importer",
-  "version": "3.1.1",
+  "version": "3.1.0",
   "description": "Allows importing json in sass files parsed by node-sass.",
   "main": "dist/node-sass-json-importer.js",
   "license": "MIT",
