@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.2
+* Filter out invalid variable names to prevent Sass compiler from crashing
+
+## 3.1.1
+* Return empty strings correctly to prevent Sass compiler from crashing
+
 ## 3.1.0
 * Add support for `.json5` files
 

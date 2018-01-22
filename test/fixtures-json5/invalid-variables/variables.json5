@@ -1,0 +1,6 @@
+{
+  "colors": "",
+  "@not-valid": "123", // Not valid because of the leading @
+  ":not-valid": "123", // Not valid because of the leading :
+  "$not-valid": "123", // Not valid because of the leading $
+}

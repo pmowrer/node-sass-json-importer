@@ -1,5 +1,9 @@
 /* eslint-env mocha */
-import jsonImporter, {isJSONfile, parseValue} from '../src';
+import jsonImporter, {
+  isJSONfile,
+  isValidKey,
+  parseValue,
+} from '../src'
 import sass                                   from 'node-sass';
 import {expect}                               from 'chai';
 import {resolve}                              from 'path';
@@ -105,6 +109,15 @@ describe('Import type test (JSON)', function() {
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
   });
+
+  it('ignores variables starting with @, : or $', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/invalid-variables/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
+  });
 });
 
 describe('Import type test (JSON5)', function() {
@@ -188,6 +201,15 @@ describe('Import type test (JSON5)', function() {
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
   });
+
+  it('ignores variables starting with @, : or $', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/invalid-variables/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
+  });
 });
 
 describe('parseValue', function() {
@@ -219,5 +241,23 @@ describe('isJSONfile', function() {
 
   it('returns false if the given URL is not a JSON or JSON5 file', function() {
     expect(isJSONfile('/test/variables.not-json-or-json5')).to.be.false;
+  });
+});
+
+describe('isValidKey', function() {
+  it('returns false if the given key starts with @', function() {
+    expect(isValidKey('@invalid')).to.be.false;
+  });
+
+  it('returns false if the given key starts with :', function() {
+    expect(isValidKey(':invalid')).to.be.false;
+  });
+
+  it('returns false if the given key starts with $', function() {
+    expect(isValidKey('$invalid')).to.be.false;
+  });
+
+  it('returns true if the given key does not start with @, : or $', function() {
+    expect(isValidKey('valid')).to.be.true;
   });
 });
