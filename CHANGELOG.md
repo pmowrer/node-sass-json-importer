@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.4
+* Convert values containing commas inside of an object into strings
+
 ## 3.1.3
 * Extend key filtering to nested maps
 
