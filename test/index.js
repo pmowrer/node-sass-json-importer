@@ -228,6 +228,17 @@ describe('parseValue', function() {
   it('returns the raw value if not an array, object or empty string', function() {
     expect(123).to.eql(123);
   });
+  it('can parse nested maps with invalid keys', function() {
+    const nestedWithInvalid = {
+      inner: {
+        ':problem1': 'value1',
+        '$problem2': 'value2',
+        '@problem3': 'value3',
+        valid: 'value4',
+      }
+    };
+    expect(parseValue(nestedWithInvalid)).to.eql('(inner: (valid: value4))');
+  });
 });
 
 describe('isJSONfile', function() {

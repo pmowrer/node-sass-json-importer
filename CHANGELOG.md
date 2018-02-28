@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.3
+* Extend key filtering to nested maps
+
 ## 3.1.2
 * Filter out invalid variable names to prevent Sass compiler from crashing
 
