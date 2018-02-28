@@ -71,6 +71,7 @@ export function parseList(list) {
 
 export function parseMap(map) {
   return `(${Object.keys(map)
+    .filter(key => isValidKey(key))
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
 }
