@@ -226,8 +226,21 @@ describe('parseValue', function() {
   });
 
   it('returns the raw value if not an array, object or empty string', function() {
-    expect(123).to.eql(123);
+    expect(parseValue(123)).to.eql(123);
   });
+
+  it('wraps the value in an object in quotes if the value contains a comma outside of a function', function() {
+    expect(parseValue({
+      "key": "value with , somewhere",
+    })).to.eql('(key: "value with , somewhere")');
+  });
+
+  it('does not wrap the value in an object in quotes if the value contains a function', function() {
+    expect(parseValue({
+      "key": "hsl(270, 60%, 70%)",
+    })).to.eql('(key: hsl(270, 60%, 70%))');
+  });
+
   it('can parse nested maps with invalid keys', function() {
     const nestedWithInvalid = {
       inner: {
