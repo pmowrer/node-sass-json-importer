@@ -1,7 +1,10 @@
 # Changelog
 
+## 3.1.5
+* Don't wrap values containing only comma-separated variables into quotes
+
 ## 3.1.4
-* Convert values containing commas inside of an object into strings
+* Convert values containing commas inside of an object into quotes
 
 ## 3.1.3
 * Extend key filtering to nested maps
