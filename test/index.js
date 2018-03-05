@@ -231,14 +231,22 @@ describe('parseValue', function() {
 
   it('wraps the value in an object in quotes if the value contains a comma outside of a function', function() {
     expect(parseValue({
-      "key": "value with , somewhere",
+      'key': 'value with , somewhere',
     })).to.eql('(key: "value with , somewhere")');
   });
 
   it('does not wrap the value in an object in quotes if the value contains a function', function() {
     expect(parseValue({
-      "key": "hsl(270, 60%, 70%)",
+      'key': 'hsl(270, 60%, 70%)',
     })).to.eql('(key: hsl(270, 60%, 70%))');
+  });
+
+  it('does not wrap the value in an object in quotes if the value contains only comma-separated variables', function() {
+    const input = {
+      'someKey': '$variable, $variable2',
+    };
+
+    expect(parseValue(input)).to.eql('(someKey: $variable, $variable2)');
   });
 
   it('can parse nested maps with invalid keys', function() {

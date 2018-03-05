@@ -84,14 +84,31 @@ export function parseMap(map) {
  * write SASS" should be wrapped in quotes. This function checks if commas are used outside of SASS
  * functions.
  *
- * @param input Input to check.
+ * @param {string} input Input to check.
  *
  * @return {boolean} True = Should be wrapped in quotes.
  */
 export function shouldWrapInStrings(input) {
   const inputWithoutFunctions = input.replace(/[a-zA-Z]+\([^)]*\)/, "") // Remove functions
 
+  if (containsOnlyCommaSeparatedVariables(inputWithoutFunctions)) {
+    return false;
+  }
+
   return inputWithoutFunctions.includes(',');
+}
+
+/**
+ * Checks if the input contains only comma-separated variables ($abc).
+ *
+ * @param {string} input Input to check.
+ *
+ * @returns {boolean} True = Contains only comma-separated variables.
+ */
+export function containsOnlyCommaSeparatedVariables(input) {
+  const commaSeparatedParts = input.split(',');
+
+  return commaSeparatedParts.every(part => part.trim().startsWith('$'));
 }
 
 // Super-hacky: Override Babel's transpiled export to provide both
