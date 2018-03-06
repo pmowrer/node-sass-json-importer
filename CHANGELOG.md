@@ -1,4 +1,6 @@
 # Changelog
+## 3.1.5
+* Reverts `3.1.4`. We aren't able to find a way to support automatic handling of values containing `,` that isn't full of edge cases. The recommendation remains to wrap such values in single quotes if they're meant to be interpreted as strings.
 
 ## 3.1.4
 * Convert values containing commas inside of an object into strings
