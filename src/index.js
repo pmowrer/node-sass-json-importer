@@ -58,8 +58,6 @@ export function parseValue(value) {
     return parseMap(value);
   } else if (value === '') {
     return '""'; // Return explicitly an empty string (Sass would otherwise throw an error as the variable is set to nothing)
-  } else if (_.isString(value) && shouldWrapInStrings(value)) {
-    return '"' + value + '"'; // Sass throws an error if a value contains a comma and is not treated as a string
   } else {
     return value;
   }
@@ -76,22 +74,6 @@ export function parseMap(map) {
     .filter(key => isValidKey(key))
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
-}
-
-/**
- * There are multiple SASS functions (e.g. hsl() oder rgb()) which receive comma-separated values
- * (e.g. hsl(270, 60%, 70%)). These should not be wrapped in quotes. A string like "Tomorrow, I will
- * write SASS" should be wrapped in quotes. This function checks if commas are used outside of SASS
- * functions.
- *
- * @param input Input to check.
- *
- * @return {boolean} True = Should be wrapped in quotes.
- */
-export function shouldWrapInStrings(input) {
-  const inputWithoutFunctions = input.replace(/[a-zA-Z]+\([^)]*\)/, "") // Remove functions
-
-  return inputWithoutFunctions.includes(',');
 }
 
 // Super-hacky: Override Babel's transpiled export to provide both
