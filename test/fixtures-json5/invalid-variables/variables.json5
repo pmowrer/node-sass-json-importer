@@ -3,4 +3,5 @@
   "@not-valid": "123", // Not valid because of the leading @
   ":not-valid": "123", // Not valid because of the leading :
   "$not-valid": "123", // Not valid because of the leading $
+  "invalid-value": "#", // Not valid because of `#` as value
 }

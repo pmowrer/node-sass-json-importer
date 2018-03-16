@@ -2,5 +2,6 @@
   "colors": "",
   "@not-valid": "123",
   ":not-valid": "123",
-  "$not-valid": "123"
+  "$not-valid": "123",
+  "invalid-value": "#"
 }

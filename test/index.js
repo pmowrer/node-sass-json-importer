@@ -118,6 +118,15 @@ describe('Import type test (JSON)', function() {
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
   });
+
+  it('filters out `#` as variable value', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/invalid-variables/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
+  });
 });
 
 describe('Import type test (JSON5)', function() {
@@ -210,6 +219,15 @@ describe('Import type test (JSON5)', function() {
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
   });
+
+  it('filters out `#` as variable value', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/invalid-variables/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
+  });
 });
 
 describe('parseValue', function() {
@@ -226,8 +244,9 @@ describe('parseValue', function() {
   });
 
   it('returns the raw value if not an array, object or empty string', function() {
-    expect(123).to.eql(123);
+    expect(parseValue(123)).to.eql(123);
   });
+
   it('can parse nested maps with invalid keys', function() {
     const nestedWithInvalid = {
       inner: {
