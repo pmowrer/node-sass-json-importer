@@ -43,6 +43,7 @@ export function isJSONfile(url) {
 export function transformJSONtoSass(json) {
   return Object.keys(json)
     .filter(key => isValidKey(key))
+    .filter(key => json[key] !== '#')
     .map(key => `$${key}: ${parseValue(json[key])};`)
     .join('\n');
 }
