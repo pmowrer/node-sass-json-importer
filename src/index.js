@@ -1,5 +1,5 @@
 import _               from 'lodash';
-import path, {resolve} from 'path';
+import path, {resolve, basename, extname} from 'path';
 import isThere         from 'is-there';
 
 import 'json5/lib/require'; // Enable JSON5 support
@@ -29,7 +29,7 @@ export default function(url, prev) {
 
   try {
     return {
-      contents: transformJSONtoSass(require(fileName)),
+      contents: transformJSONtoSass(require(fileName), basename(fileName, extname(fileName))),
     };
   } catch(error) {
     return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);
@@ -40,7 +40,10 @@ export function isJSONfile(url) {
   return /\.json5?$/.test(url);
 }
 
-export function transformJSONtoSass(json) {
+export function transformJSONtoSass(json, fileName) {
+  if (json.constructor === Array) {
+    json = { [fileName]: json };
+  }
   return Object.keys(json)
     .filter(key => isValidKey(key))
     .filter(key => json[key] !== '#')
