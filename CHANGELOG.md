@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.2.0
+* Allow importing JSON as a top-level array.
+
 ## 3.1.6
 * Filter out `#` as value for a variable
 
