@@ -1,6 +1,6 @@
-import _               from 'lodash';
-import path, {resolve} from 'path';
-import isThere         from 'is-there';
+import _        from 'lodash';
+import isThere  from 'is-there';
+import path, {resolve, basename, extname} from 'path';
 
 import 'json5/lib/require'; // Enable JSON5 support
 
@@ -28,8 +28,12 @@ export default function(url, prev) {
   delete require.cache[require.resolve(fileName)];
 
   try {
+    const fileContents = require(fileName);
+    const extensionlessFilename = basename(fileName, extname(fileName));
+    const json = Array.isArray(fileContents) ? { [extensionlessFilename]: fileContents } : fileContents;
+
     return {
-      contents: transformJSONtoSass(require(fileName)),
+      contents: transformJSONtoSass(json),
     };
   } catch(error) {
     return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);

@@ -56,6 +56,15 @@ describe('Import type test (JSON)', function() {
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
+  it('imports map from json with array as top level', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/array/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
   it('finds imports via includePaths', function() {
     let result = sass.renderSync({
       file: './test/fixtures/include-paths/style.scss',
@@ -151,6 +160,15 @@ describe('Import type test (JSON5)', function() {
   it('imports maps', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/maps/style.scss',
+      importer: jsonImporter,
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
+  it('imports map from json with array as top level', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/array/style.scss',
       importer: jsonImporter,
     });
 
