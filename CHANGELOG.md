@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.3.0
+* Add support for one element lists.
+
+  > Comma-separated lists may have a trailing comma. This is especially useful because it allows you to represent a single-element list. For example, (1,) is a list containing 1 and (1 2 3,) is a comma-separated list containing a space-separated list containing 1, 2, and 3.
+
+  https://sass-lang.com/documentation/file.SASS_REFERENCE.html#lists
+
 ## 3.2.0
 * Allow importing JSON as a top-level array.
 
