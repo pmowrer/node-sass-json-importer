@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "is-there": "^4.0.0",
-    "json5": "0.5.1",
-    "lodash": "^3.10.1"
+    "json5": "^1.0",
+    "lodash": "^4.17"
   },
   "devDependencies": {
     "babel": "^5.8.23",

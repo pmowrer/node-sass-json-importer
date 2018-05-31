@@ -2,7 +2,7 @@ import _        from 'lodash';
 import isThere  from 'is-there';
 import path, {resolve, basename, extname} from 'path';
 
-import 'json5/lib/require'; // Enable JSON5 support
+import 'json5/lib/register'; // Enable JSON5 support
 
 export default function(url, prev) {
   if (!isJSONfile(url)) {
