@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.3.1
+* Remove support for one element lists. `3.3.0` broke parsing of empty lists (#67).
+
 ## 3.3.0
 * Add support for one element lists.
 
