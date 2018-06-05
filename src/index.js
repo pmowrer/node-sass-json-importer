@@ -71,7 +71,7 @@ export function parseValue(value) {
 export function parseList(list) {
   return `(${list
     .map(value => parseValue(value))
-    .join(',')},)`;
+    .join(',')})`;
 }
 
 export function parseMap(map) {
