@@ -1,5 +1,6 @@
 import _        from 'lodash';
 import isThere  from 'is-there';
+import sass     from 'node-sass';
 import path, {resolve, basename, extname} from 'path';
 
 import 'json5/lib/register'; // Enable JSON5 support
@@ -64,6 +65,20 @@ export function parseValue(value) {
   } else if (value === '') {
     return '""'; // Return explicitly an empty string (Sass would otherwise throw an error as the variable is set to nothing)
   } else {
+    var result = value => {
+      try {
+        return sass.renderSync({
+          data: `$foo: ${value};`
+        });
+      } catch(error) {
+        return false
+      }
+    }
+
+    if (!result(value)) {
+      value = `"${value}"`;
+    }
+
     return value;
   }
 }
