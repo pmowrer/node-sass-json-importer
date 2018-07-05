@@ -65,7 +65,7 @@ export function parseValue(value) {
   } else if (value === '') {
     return '""'; // Return explicitly an empty string (Sass would otherwise throw an error as the variable is set to nothing)
   } else {
-    var result = value => {
+    const result = value => {
       try {
         return sass.renderSync({
           data: `$foo: ${value};`
