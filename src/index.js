@@ -62,25 +62,9 @@ export function parseValue(value) {
     return parseList(value);
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
-  } else if (value === '') {
-    return '""'; // Return explicitly an empty string (Sass would otherwise throw an error as the variable is set to nothing)
+  } else if (shouldBeStringified(value)) {
+    return `"${value}"`;
   } else {
-    const result = value => {
-      try {
-        sass.renderSync({
-          data: `$foo: ${value};`
-        });
-
-        return true;
-      } catch(error) {
-        return false
-      }
-    }
-
-    if (!result(value)) {
-      value = `"${value}"`;
-    }
-
     return value;
   }
 }
@@ -96,6 +80,18 @@ export function parseMap(map) {
     .filter(key => isValidKey(key))
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
+}
+
+export function shouldBeStringified(value) {
+  try {
+    sass.renderSync({
+      data: `$foo: ${value};`
+    });
+
+    return false;
+  } catch(error) {
+    return true
+  }
 }
 
 // Super-hacky: Override Babel's transpiled export to provide both
