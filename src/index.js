@@ -67,9 +67,11 @@ export function parseValue(value) {
   } else {
     const result = value => {
       try {
-        return sass.renderSync({
+        sass.renderSync({
           data: `$foo: ${value};`
         });
+
+        return true;
       } catch(error) {
         return false
       }
