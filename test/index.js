@@ -101,6 +101,18 @@ describe('Import type test (JSON)', function() {
     );
   });
 
+  it('allows for a custom resolver', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/include-paths/style.scss',
+      importer: jsonImporter,
+      resolver: function(dir, url) {
+        return resolve(dir, 'variables', url);
+      },
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
+  });
+
   it('ignores non-json imports', function() {
     let result = sass.renderSync({
       file: './test/fixtures/non-json/style.scss',
@@ -209,6 +221,18 @@ describe('Import type test (JSON5)', function() {
       `${resolve(process.cwd(), 'test/fixtures-json5/include-paths')}, ${process.cwd()}, ./test/fixtures-json5/include-paths/foo. ` +
       'Check includePaths.'
     );
+  });
+
+  it('allows for a custom resolver', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/include-paths/style.scss',
+      importer: jsonImporter,
+      resolver: function(dir, url) {
+        return resolve(dir, 'variables', url);
+      },
+    });
+
+    expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
   it('ignores non-json imports', function() {

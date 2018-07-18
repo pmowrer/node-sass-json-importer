@@ -14,8 +14,9 @@ export default function(url, prev) {
     .concat(prev.slice(0, prev.lastIndexOf('/')))
     .concat(includePaths);
 
+  const resolver = this.options.resolver || resolve;
   let fileName = paths
-    .map(path => resolve(path, url))
+    .map(path => resolver(path, url))
     .filter(isThere)
     .pop();
 
