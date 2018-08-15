@@ -4,40 +4,42 @@ import path, {resolve, basename, extname} from 'path';
 
 import 'json5/lib/register'; // Enable JSON5 support
 
-export default function(url, prev) {
-  if (!isJSONfile(url)) {
-    return null;
-  }
+export default function(options = {}) {
+  return function(url, prev) {
+    if (!isJSONfile(url)) {
+      return null;
+    }
 
-  let includePaths = this.options.includePaths ? this.options.includePaths.split(path.delimiter) : [];
-  let paths = []
-    .concat(prev.slice(0, prev.lastIndexOf('/')))
-    .concat(includePaths);
+    let includePaths = this.options.includePaths ? this.options.includePaths.split(path.delimiter) : [];
+    let paths = []
+      .concat(prev.slice(0, prev.lastIndexOf('/')))
+      .concat(includePaths);
 
-  const resolver = this.options.resolver || resolve;
-  let fileName = paths
-    .map(path => resolver(path, url))
-    .filter(isThere)
-    .pop();
+    const resolver = options.resolver || resolve;
+    let fileName = paths
+      .map(path => resolver(path, url))
+      .filter(isThere)
+      .pop();
 
-  if (!fileName) {
-    return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
-  }
+    if (!fileName) {
+      return new Error(`Unable to find "${url}" from the following path(s): ${paths.join(', ')}. Check includePaths.`);
+    }
 
-  // Prevent file from being cached by Node's `require` on continuous builds.
-  // https://github.com/Updater/node-sass-json-importer/issues/21
-  delete require.cache[require.resolve(fileName)];
+    // Prevent file from being cached by Node's `require` on continuous builds.
+    // https://github.com/Updater/node-sass-json-importer/issues/21
+    delete require.cache[require.resolve(fileName)];
 
-  try {
-    const fileContents = require(fileName);
-    const extensionlessFilename = basename(fileName, extname(fileName));
-    const json = Array.isArray(fileContents) ? { [extensionlessFilename]: fileContents } : fileContents;
+    try {
+      const fileContents = require(fileName);
+      const extensionlessFilename = basename(fileName, extname(fileName));
+      const json = Array.isArray(fileContents) ? { [extensionlessFilename]: fileContents } : fileContents;
 
-    return {
-      contents: transformJSONtoSass(json),
-    };
-  } catch(error) {
-    return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);
+      return {
+        contents: transformJSONtoSass(json),
+      };
+    } catch(error) {
+      return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);
+    }
   }
 }
 

@@ -16,7 +16,7 @@ describe('node-sass-json-importer', function() {
   it('provides the default export when using node require to import', function() {
     let result = sass.renderSync({
       file: './test/fixtures/strings/style.scss',
-      importer: requiredImporter,
+      importer: requiredImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -32,7 +32,7 @@ describe('Import type test (JSON)', function() {
   it('imports strings', function() {
     let result = sass.renderSync({
       file: './test/fixtures/strings/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -41,7 +41,7 @@ describe('Import type test (JSON)', function() {
   it('imports lists', function() {
     let result = sass.renderSync({
       file: './test/fixtures/lists/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -50,7 +50,7 @@ describe('Import type test (JSON)', function() {
   it('imports maps', function() {
     let result = sass.renderSync({
       file: './test/fixtures/maps/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -59,7 +59,7 @@ describe('Import type test (JSON)', function() {
   it('imports map from json with array as top level', function() {
     let result = sass.renderSync({
       file: './test/fixtures/array/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -69,7 +69,7 @@ describe('Import type test (JSON)', function() {
     let result = sass.renderSync({
       file: './test/fixtures/include-paths/style.scss',
       includePaths: ['./test/fixtures/include-paths/variables'],
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -79,7 +79,7 @@ describe('Import type test (JSON)', function() {
     let result = sass.renderSync({
       file: './test/fixtures/include-paths/style.scss',
       includePaths: ['./test/fixtures/include-paths/variables', './some/other/path/'],
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -90,7 +90,7 @@ describe('Import type test (JSON)', function() {
       sass.renderSync({
         file: './test/fixtures/include-paths/style.scss',
         includePaths: ['./test/fixtures/include-paths/foo'],
-        importer: jsonImporter,
+        importer: jsonImporter(),
       });
     }
 
@@ -104,10 +104,11 @@ describe('Import type test (JSON)', function() {
   it('allows for a custom resolver', function() {
     let result = sass.renderSync({
       file: './test/fixtures/include-paths/style.scss',
-      importer: jsonImporter,
-      resolver: function(dir, url) {
-        return resolve(dir, 'variables', url);
-      },
+      importer: jsonImporter({
+        resolver: function(dir, url) {
+          return resolve(dir, 'variables', url);
+        },
+      }),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -116,7 +117,7 @@ describe('Import type test (JSON)', function() {
   it('ignores non-json imports', function() {
     let result = sass.renderSync({
       file: './test/fixtures/non-json/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -125,7 +126,7 @@ describe('Import type test (JSON)', function() {
   it('imports empty strings correctly', function() {
     let result = sass.renderSync({
       file: './test/fixtures/empty-string/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
@@ -134,7 +135,7 @@ describe('Import type test (JSON)', function() {
   it('ignores variables starting with @, : or $', function() {
     let result = sass.renderSync({
       file: './test/fixtures/invalid-variables/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
@@ -143,7 +144,7 @@ describe('Import type test (JSON)', function() {
   it('filters out `#` as variable value', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/invalid-variables/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
@@ -154,7 +155,7 @@ describe('Import type test (JSON5)', function() {
   it('imports strings', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/strings/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -163,7 +164,7 @@ describe('Import type test (JSON5)', function() {
   it('imports lists', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/lists/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -172,7 +173,7 @@ describe('Import type test (JSON5)', function() {
   it('imports maps', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/maps/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -181,7 +182,7 @@ describe('Import type test (JSON5)', function() {
   it('imports map from json with array as top level', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/array/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -191,7 +192,7 @@ describe('Import type test (JSON5)', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/include-paths/style.scss',
       includePaths: ['./test/fixtures-json5/include-paths/variables'],
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -201,7 +202,7 @@ describe('Import type test (JSON5)', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/include-paths/style.scss',
       includePaths: ['./test/fixtures-json5/include-paths/variables', './some/other/path/'],
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -212,7 +213,7 @@ describe('Import type test (JSON5)', function() {
       sass.renderSync({
         file: './test/fixtures-json5/include-paths/style.scss',
         includePaths: ['./test/fixtures-json5/include-paths/foo'],
-        importer: jsonImporter,
+        importer: jsonImporter(),
       });
     }
 
@@ -226,10 +227,11 @@ describe('Import type test (JSON5)', function() {
   it('allows for a custom resolver', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/include-paths/style.scss',
-      importer: jsonImporter,
-      resolver: function(dir, url) {
-        return resolve(dir, 'variables', url);
-      },
+      importer: jsonImporter({
+        resolver: function(dir, url) {
+          return resolve(dir, 'variables', url);
+        },
+      }),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -238,7 +240,7 @@ describe('Import type test (JSON5)', function() {
   it('ignores non-json imports', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/non-json/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
@@ -247,7 +249,7 @@ describe('Import type test (JSON5)', function() {
   it('imports empty strings correctly', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/empty-string/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
@@ -256,7 +258,7 @@ describe('Import type test (JSON5)', function() {
   it('ignores variables starting with @, : or $', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/invalid-variables/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
@@ -265,7 +267,7 @@ describe('Import type test (JSON5)', function() {
   it('filters out `#` as variable value', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/invalid-variables/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
