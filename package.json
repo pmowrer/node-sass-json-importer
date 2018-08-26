@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "test": "mocha --compilers js:babel/register",
-    "compile": "mkdirp dist && babel -o dist/node-sass-json-importer.js src/index.js && babel -o dist/cli.js src/cli.js",
+    "compile": "mkdirp dist && babel src -d dist",
     "prepublish": "npm run compile"
   },
   "peerDependencies": {

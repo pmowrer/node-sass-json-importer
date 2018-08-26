@@ -1,2 +1,2 @@
-import jsonImporter from './node-sass-json-importer';
+import jsonImporter from './index';
 export default jsonImporter();
