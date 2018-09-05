@@ -16,14 +16,14 @@ var jsonImporter = require('node-sass-json-importer');
 // Example 1
 sass.render({
   file: scss_filename,
-  importer: jsonImporter,
+  importer: jsonImporter(),
   [, options..]
 }, function(err, result) { /*...*/ });
 
 // Example 2
 var result = sass.renderSync({
   data: scss_content
-  importer: [jsonImporter, someOtherImporter]
+  importer: [jsonImporter(), someOtherImporter]
   [, options..]
 });
 ```
@@ -33,7 +33,7 @@ var result = sass.renderSync({
 To run this using node-sass CLI, point `--importer` to your installed json importer, for example: 
 
 ```sh
-./node_modules/.bin/node-sass --importer node_modules/node-sass-json-importer/dist/node-sass-json-importer.js --recursive ./src --output ./dist
+./node_modules/.bin/node-sass --importer node_modules/node-sass-json-importer/dist/cli.js --recursive ./src --output ./dist
 ```
 
 ### Webpack / [sass-loader](https://github.com/jtangelder/sass-loader)
@@ -53,7 +53,7 @@ export default {
   },
   // Apply the JSON importer via sass-loader's options.
   sassLoader: {
-    importer: jsonImporter
+    importer: jsonImporter()
   }
 };
 ```
@@ -80,7 +80,7 @@ export default {
           loader: 'sass-loader',
           // Apply the JSON importer via sass-loader's options.
           options: {
-            importer: jsonImporter,
+            importer: jsonImporter(),
           },
         },
       ],
@@ -109,6 +109,41 @@ Since JSON doesn't map directly to SASS's data types, a common source of confusi
 See discussion here for more:
 
 https://github.com/Updater/node-sass-json-importer/pull/5
+
+## Custom resolver
+
+Should you care to resolve paths, say, starting with `~/` relative to project root or some other arbitrary directory, you can do it as follows:
+
+`1.sass`:
+
+```sass
+@import '~/1.json'
+body
+    margin: $body-margin
+```
+
+`json/1.json`:
+
+```json
+{"body-margin": 0}
+```
+
+```js
+var path = require('path');
+var sass = require('node-sass');
+var jsonImporter = require('../dist/node-sass-json-importer');
+
+sass.render({
+  file: './1.sass',
+  importer: jsonImporter({
+  resolver: function(dir, url) {
+    return url.startsWith('~/')
+      ? path.resolve(dir, 'json', url.substr(2))
+      : path.resolve(dir, url);
+  },
+  }),
+}, function(err, result) { console.log(err || result.css.toString()) });
+```
 
 ## Thanks to
 This module is based on the [sass-json-vars](https://github.com/vigetlabs/sass-json-vars) gem, which unfortunately isn't compatible with `node-sass`.

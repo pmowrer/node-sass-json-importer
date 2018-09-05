@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0
+* Add resolver option (ability to override how json file paths gets resolved) (#71).
+
 ## 3.3.1
 * Remove support for one element lists. `3.3.0` broke parsing of empty lists (#67).
 
