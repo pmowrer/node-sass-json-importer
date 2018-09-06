@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.1
+* Update package.json's main field (#73).
+
 ## 4.0.0
 * Add resolver option (ability to override how json file paths gets resolved) (#71).
 
