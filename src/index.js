@@ -1,5 +1,6 @@
 import _        from 'lodash';
 import isThere  from 'is-there';
+import sass     from 'node-sass';
 import path, {resolve, basename, extname} from 'path';
 
 import 'json5/lib/register'; // Enable JSON5 support
@@ -64,8 +65,8 @@ export function parseValue(value) {
     return parseList(value);
   } else if (_.isPlainObject(value)) {
     return parseMap(value);
-  } else if (value === '') {
-    return '""'; // Return explicitly an empty string (Sass would otherwise throw an error as the variable is set to nothing)
+  } else if (shouldBeStringified(value)) {
+    return `"${value}"`;
   } else {
     return value;
   }
@@ -82,6 +83,18 @@ export function parseMap(map) {
     .filter(key => isValidKey(key))
     .map(key => `${key}: ${parseValue(map[key])}`)
     .join(',')})`;
+}
+
+export function shouldBeStringified(value) {
+  try {
+    sass.renderSync({
+      data: `$foo: ${value};`
+    });
+
+    return false;
+  } catch(error) {
+    return true
+  }
 }
 
 // Super-hacky: Override Babel's transpiled export to provide both
