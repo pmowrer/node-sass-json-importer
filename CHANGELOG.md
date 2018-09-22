@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0
+
+- Return `fileName` to have sass-loader handle dependency correctly (#74).
+
 ## 4.0.1
 * Update package.json's main field (#73).
 

@@ -36,6 +36,7 @@ export default function(options = {}) {
 
       return {
         contents: transformJSONtoSass(json),
+        file: fileName,
       };
     } catch(error) {
       return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);
