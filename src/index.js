@@ -73,9 +73,10 @@ export function parseValue(value) {
 }
 
 export function parseList(list) {
-  return `(${list
+  const listContent = list
     .map(value => parseValue(value))
-    .join(',')},)`;
+    .join(',');
+  return listContent ? `(${listContent},)` : `()`;
 }
 
 export function parseMap(map) {

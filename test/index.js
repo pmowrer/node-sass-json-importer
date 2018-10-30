@@ -54,7 +54,16 @@ describe('Import type test (JSON)', function() {
   it('imports one element lists correctly', function() {
     let result = sass.renderSync({
       file: './test/fixtures/one-element-lists/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
+  });
+
+  it('imports empty lists correctly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/empty-lists/style.scss',
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
@@ -186,7 +195,16 @@ describe('Import type test (JSON5)', function() {
   it('imports one element lists correctly', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/one-element-lists/style.scss',
-      importer: jsonImporter,
+      importer: jsonImporter(),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
+  });
+
+  it('imports empty lists correctly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/empty-lists/style.scss',
+      importer: jsonImporter(),
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
