@@ -67,20 +67,22 @@ import jsonImporter from 'node-sass-json-importer';
 export default {
   module: {
     rules: [
-      test: /\.scss$/,
-      use: [
-        'style-loader',
-        {
-          loader: 'css-loader',
-          options: {
-            importLoaders: 1
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            },
           },
-        },
-        {
-          loader: 'sass-loader',
-          // Apply the JSON importer via sass-loader's options.
-          options: {
-            importer: jsonImporter(),
+          {
+            loader: 'sass-loader',
+            // Apply the JSON importer via sass-loader's options.
+            options: {
+              importer: jsonImporter(),
+            },
           },
         },
       ],
