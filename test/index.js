@@ -20,10 +20,6 @@ describe('node-sass-json-importer', function() {
     });
 
     expect(result.css.toString()).to.eql(EXPECTATION);
-    expect(result.stats.includedFiles).to.eql([
-      resolve('./test/fixtures/strings/style.scss'),
-      resolve('./test/fixtures/strings/variables.json'),
-    ].sort());
   });
 
   // TODO: Added to verify named exports + CommonJS default export hack (see index.js).

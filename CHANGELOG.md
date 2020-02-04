@@ -1,5 +1,7 @@
 # Changelog
 
+Deprecated. For versions above **4.1.0**, please refer to "Releases" in GitHub UI.
+
 ## 4.1.0
 
 - Return `fileName` to have sass-loader handle dependency correctly (#74).
