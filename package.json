@@ -1,6 +1,6 @@
 {
   "name": "node-sass-json-importer",
-  "version": "4.0.1",
+  "version": "0.0.0-development",
   "description": "Allows importing json in sass files parsed by node-sass.",
   "main": "dist/index.js",
   "license": "MIT",
@@ -15,23 +15,26 @@
     "json"
   ],
   "scripts": {
-    "test": "mocha --compilers js:babel/register",
+    "test": "mocha --require @babel/register",
     "compile": "mkdirp dist && babel src -d dist",
-    "prepublish": "npm run compile"
+    "prepublishOnly": "npm run compile"
   },
   "peerDependencies": {
     "node-sass": ">=3.5.3"
   },
   "dependencies": {
-    "is-there": "^4.0.0",
-    "json5": "^1.0",
-    "lodash": "^4.17"
+    "is-there": "^4.4.4",
+    "json5": "^2.1.1",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "babel": "^5.8.23",
-    "chai": "^3.2.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^2.3.2",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "chai": "^4.2.0",
+    "mkdirp": "^1.0.3",
+    "mocha": "^7.0.1",
     "node-sass": ">=3.5.3",
     "semantic-release": "^17.0.2",
     "semantic-release-github-pr": "^6.0.0"
