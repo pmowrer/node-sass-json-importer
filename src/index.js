@@ -12,7 +12,7 @@ export default function(options = {}) {
 
     let includePaths = this.options.includePaths ? this.options.includePaths.split(path.delimiter) : [];
     let paths = []
-      .concat(prev.slice(0, prev.lastIndexOf('/')))
+      .concat(prev.slice(0, prev.lastIndexOf(path.sep)))
       .concat(includePaths);
 
     const resolver = options.resolver || resolve;
