@@ -1,6 +1,6 @@
 import _        from 'lodash';
 import isThere  from 'is-there';
-import path, {resolve, basename, extname} from 'path';
+import path, {resolve, basename, extname, dirname} from 'path';
 
 import 'json5/lib/register'; // Enable JSON5 support
 
@@ -12,7 +12,7 @@ export default function(options = {}) {
 
     let includePaths = this.options.includePaths ? this.options.includePaths.split(path.delimiter) : [];
     let paths = []
-      .concat(prev.slice(0, prev.lastIndexOf(path.sep)))
+      .concat(dirname(prev))
       .concat(includePaths);
 
     const resolver = options.resolver || resolve;
