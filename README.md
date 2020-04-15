@@ -91,7 +91,9 @@ export default {
 };
 ```
 
-## Importing strings
+## Importing
+
+### Importing strings
 Since JSON doesn't map directly to SASS's data types, a common source of confusion is how to handle strings. While [SASS allows strings to be both quoted and unquoted](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#sass-script-strings), strings containing spaces, commas and/or other special characters have to be wrapped in quotes. In terms of JSON, this means the string has to be double quoted:
 
 ##### Incorrect
@@ -111,6 +113,21 @@ Since JSON doesn't map directly to SASS's data types, a common source of confusi
 See discussion here for more:
 
 https://github.com/Updater/node-sass-json-importer/pull/5
+
+### Importing *.js Files
+
+You can also import *.js Files. This way you can use javascript to compose and export json structure for node-sass-json-importer.
+```
+const xl = require('./variables.json')
+const md = require('./variables-md.json')
+const xs = require('./variables-xs.json')
+
+module.exports = {
+    xl,
+    md,
+    xs,
+}
+```
 
 ## Custom resolver
 

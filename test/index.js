@@ -313,6 +313,10 @@ describe('isJSONfile', function() {
     expect(isJSONfile('/test/variables.json5')).to.be.true;
   });
 
+  it('returns true if the given URL is a JS file', function() {
+    expect(isJSONfile('/test/composed-variables.js')).to.be.true;
+  });
+
   it('returns false if the given URL is not a JSON or JSON5 file', function() {
     expect(isJSONfile('/test/variables.not-json-or-json5')).to.be.false;
   });
