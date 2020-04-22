@@ -47,6 +47,24 @@ describe('Import type test (JSON)', function() {
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
+  it('imports one element lists correctly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/one-element-lists/style.scss',
+      importer: jsonImporter(),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
+  });
+
+  it('imports empty lists correctly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/empty-lists/style.scss',
+      importer: jsonImporter(),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
+  });
+
   it('imports maps', function() {
     let result = sass.renderSync({
       file: './test/fixtures/maps/style.scss',
@@ -170,6 +188,24 @@ describe('Import type test (JSON5)', function() {
     expect(result.css.toString()).to.eql(EXPECTATION);
   });
 
+  it('imports one element lists correctly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/one-element-lists/style.scss',
+      importer: jsonImporter(),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
+  });
+
+  it('imports empty lists correctly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/empty-lists/style.scss',
+      importer: jsonImporter(),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: list; }\n');
+  });
+
   it('imports maps', function() {
     let result = sass.renderSync({
       file: './test/fixtures-json5/maps/style.scss',
@@ -275,11 +311,11 @@ describe('Import type test (JSON5)', function() {
 });
 
 describe('parseValue', function() {
-  it('returns comma-separated items wrapped in parentheses for an array', function() {
-    expect(parseValue(['some', 'entries'])).to.eql('(some,entries)');
+  it('returns comma-separated items wrapped in parentheses with trailing comma for an array', function() {
+    expect(parseValue(['some', 'entries'])).to.eql('(some,entries,)');
   });
 
-  it('calls comma-separated key value pairs wrapped in parentheses for an object', function() {
+  it('returns comma-separated key value pairs wrapped in parentheses for an object', function() {
     expect(parseValue({'key1': 'value1', 'key2': 'value2'})).to.eql('(key1: value1,key2: value2)');
   });
 
