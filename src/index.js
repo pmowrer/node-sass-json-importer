@@ -44,7 +44,7 @@ export default function(options = {}) {
 }
 
 export function isJSONfile(url) {
-  return /\.json5?$/.test(url);
+  return /\.js(on5?)?$/.test(url);
 }
 
 export function transformJSONtoSass(json) {
