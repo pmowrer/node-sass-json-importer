@@ -2,6 +2,7 @@
 import jsonImporter, {
   isJSONfile,
   isValidKey,
+  toKebabCase,
   parseValue,
 } from '../src'
 import sass                                   from 'node-sass';
@@ -148,6 +149,17 @@ describe('Import type test (JSON)', function() {
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
+  });
+
+  it('converts case properly', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures/convert-case/style.scss',
+      importer: jsonImporter({
+        convertCase: true,
+      }),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: #c33;\n  color: #3c3;\n  color: #33c; }\n');
   });
 });
 
@@ -337,5 +349,23 @@ describe('isValidKey', function() {
 
   it('returns true if the given key does not start with @, : or $', function() {
     expect(isValidKey('valid')).to.be.true;
+  });
+});
+
+describe('toKebabCase', function() {
+  it('can handle camelCase', function() {
+    expect(toKebabCase('camelCase')).to.eql('camel-case');
+  });
+
+  it('can handle PascalCase', function() {
+    expect(toKebabCase('PascalCase')).to.eql('pascal-case');
+  });
+
+  it('can handle ALLCAPSCase', function() {
+    expect(toKebabCase('ALLCAPSCase')).to.eql('allcaps-case');
+  });
+
+  it('can even handle EDGECaseWELLCase', function() {
+    expect(toKebabCase('EDGECaseWELLCase')).to.eql('edge-case-well-case');
   });
 });
