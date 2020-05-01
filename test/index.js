@@ -151,7 +151,7 @@ describe('Import type test (JSON)', function() {
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
   });
 
-  it('converts case properly', function() {
+  it('allows case conversion', function() {
     let result = sass.renderSync({
       file: './test/fixtures/convert-case/style.scss',
       importer: jsonImporter({
@@ -283,6 +283,17 @@ describe('Import type test (JSON5)', function() {
     });
 
     expect(result.css.toString()).to.eql('body {\n  color: ""; }\n');
+  });
+
+  it('allows case conversion', function() {
+    let result = sass.renderSync({
+      file: './test/fixtures-json5/convert-case/style.scss',
+      importer: jsonImporter({
+        convertCase: true,
+      }),
+    });
+
+    expect(result.css.toString()).to.eql('body {\n  color: #c33;\n  color: #3c3;\n  color: #33c; }\n');
   });
 });
 
