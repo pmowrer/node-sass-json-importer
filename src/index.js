@@ -35,7 +35,7 @@ export default function(options = {}) {
       const json = Array.isArray(fileContents) ? { [extensionlessFilename]: fileContents } : fileContents;
 
       return {
-        contents: transformJSONtoSass(json),
+        contents: transformJSONtoSass(json, options),
       };
     } catch(error) {
       return new Error(`node-sass-json-importer: Error transforming JSON/JSON5 to SASS. Check if your JSON/JSON5 parses correctly. ${error}`);
@@ -47,11 +47,11 @@ export function isJSONfile(url) {
   return /\.js(on5?)?$/.test(url);
 }
 
-export function transformJSONtoSass(json) {
+export function transformJSONtoSass(json, opts = {}) {
   return Object.keys(json)
     .filter(key => isValidKey(key))
     .filter(key => json[key] !== '#')
-    .map(key => `$${key}: ${parseValue(json[key])};`)
+    .map(key => `$${opts.convertCase ? toKebabCase(key) : key}: ${parseValue(json[key], opts)};`)
     .join('\n');
 }
 
@@ -59,11 +59,18 @@ export function isValidKey(key) {
   return /^[^$@:].*/.test(key)
 }
 
-export function parseValue(value) {
+export function toKebabCase(key) {
+  return key
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
+    .toLowerCase();
+}
+
+export function parseValue(value, opts = {}) {
   if (_.isArray(value)) {
-    return parseList(value);
+    return parseList(value, opts);
   } else if (_.isPlainObject(value)) {
-    return parseMap(value);
+    return parseMap(value, opts);
   } else if (value === '') {
     return '""'; // Return explicitly an empty string (Sass would otherwise throw an error as the variable is set to nothing)
   } else {
@@ -71,16 +78,16 @@ export function parseValue(value) {
   }
 }
 
-export function parseList(list) {
+export function parseList(list, opts = {}) {
   return `(${list
     .map(value => parseValue(value))
     .join(',')})`;
 }
 
-export function parseMap(map) {
+export function parseMap(map, opts = {}) {
   return `(${Object.keys(map)
     .filter(key => isValidKey(key))
-    .map(key => `${key}: ${parseValue(map[key])}`)
+    .map(key => `${opts.convertCase ? toKebabCase(key) : key}: ${parseValue(map[key], opts)}`)
     .join(',')})`;
 }
 

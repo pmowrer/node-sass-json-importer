@@ -155,11 +155,46 @@ var jsonImporter = require('../dist/node-sass-json-importer');
 sass.render({
   file: './1.sass',
   importer: jsonImporter({
-  resolver: function(dir, url) {
-    return url.startsWith('~/')
-      ? path.resolve(dir, 'json', url.substr(2))
-      : path.resolve(dir, url);
-  },
+    resolver: function(dir, url) {
+      return url.startsWith('~/')
+        ? path.resolve(dir, 'json', url.substr(2))
+        : path.resolve(dir, url);
+    },
+  }),
+}, function(err, result) { console.log(err || result.css.toString()) });
+```
+
+## camelCase to kebab-case
+
+If you want to convert standard JavaScript caseCase keys into CSS/SCSS compliant kebab-case keys, for example:
+
+`variables.json`:
+
+```JS
+{
+  "bgBackgroundColor": 'red'
+}
+```
+
+For usage like this:
+
+`style.scss`:
+
+```SCSS
+@import "variables.json";
+
+div {
+  background: $bg-background-color;
+}
+```
+
+You can pass set the `convertCase` option to true as an argument to `jsonImporter` like so:
+
+```js
+sass.render({
+  file: './1.sass',
+  importer: jsonImporter({
+    convertCase: true,
   }),
 }, function(err, result) { console.log(err || result.css.toString()) });
 ```
