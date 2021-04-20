@@ -159,7 +159,7 @@ describe('Import type test (JSON)', function() {
       }),
     });
 
-    expect(result.css.toString()).to.eql('body {\n  color: #c33;\n  color: #3c3;\n  color: #33c; }\n');
+    expect(result.css.toString()).to.eql('body {\n  color: #f00;\n  color: #0f0;\n  color: #00f;\n  color: #333; }\n');
   });
 });
 

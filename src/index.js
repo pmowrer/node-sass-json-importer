@@ -60,10 +60,9 @@ export function isValidKey(key) {
 }
 
 export function toKebabCase(key) {
-  return key
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
-    .toLowerCase();
+  return key.match(/[A-Z]{2,}(?=[A-Z][a-z]+|\b)|[A-Z]?[a-z]+|[A-Z]|[0-9]+/g)
+    .map((word) => word.toLowerCase())
+    .join('-');
 }
 
 export function parseValue(value, opts = {}) {

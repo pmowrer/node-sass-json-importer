@@ -1,5 +1,6 @@
 {
-  "colorRed": "#c33",
-  "ColorGreen": "#3c3",
-  "COLORBlue": "#33c"
+  "colorRed": "#f00",
+  "ColorGreen": "#0f0",
+  "COLORBlue": "#00f",
+  "colorGray1LightMode": "#333"
 }
